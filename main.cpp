@@ -1,26 +1,59 @@
 #include <iostream>
-#include <fstream>
 using namespace std;
 
-void check_identifier(string s);
+bool isKeyword(string s)
+{
+    return(s=="int"||s=="return");
+}
 
 int main()
 {
-    ifstream file("sample.txt");
-    if (!file)
+    char ch;
+    string w;
+
+    while(cin.get(ch))
     {
-        cout << "Error: Could not open sample.txt file!" << endl;
-        return 1;
+        if((ch>='a'&&ch<='z')||(ch>='A' && ch<='Z'))
+        {
+            w=ch;
+            while(cin.peek()!=EOF&&((cin.peek()>='a'&&cin.peek()<='z')||(cin.peek()>='A'&&cin.peek()<='Z')||(cin.peek()>='0'&&cin.peek()<='9')))
+            {
+                cin.get(ch);
+                w+=ch;
+            }
+
+            if(isKeyword(w))
+            {
+                cout<<w<<" : Keyword"<<endl;
+            }
+            else
+            {
+                cout<<w<<" : Identifier"<<endl;
+            }
+
+
+            w.clear();
+        }
+        else if(ch>='0'&&ch<='9')
+        {
+            w=ch;
+            while(cin.peek()!=EOF&&cin.peek()>='0'&&cin.peek()<='9')
+            {
+                cin.get(ch);
+                w+=ch;
+            }
+            cout<<w<<" : Number"<<endl;
+            w.clear();
+        }
+        else if(ch=='=')
+        {
+            cout<<ch<<" : Operator"<<endl;
+        }
+        else if(ch=='('||ch==')'||ch=='{'||ch=='}'||ch==';'||ch==',')
+        {
+           cout << ch << " : Punctuation" << endl;
+        }
+
     }
 
-    string s;
-    cout << "Checking Identifiers from sample.text\n" << endl;
-
-    while (file >> s)
-    {
-        check_identifier(s);
-    }
-
-    file.close();
-    return 0;
 }
